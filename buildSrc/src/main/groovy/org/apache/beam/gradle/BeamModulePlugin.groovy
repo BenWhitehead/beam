@@ -21,27 +21,22 @@ package org.apache.beam.gradle
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.gradle.api.attributes.Category
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.attributes.Category
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.Delete
-import org.gradle.api.tasks.Exec
-import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.*
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -425,6 +420,7 @@ class BeamModulePlugin implements Plugin<Project> {
     def errorprone_version = "2.3.4"
     def google_clients_version = "1.31.0"
     def google_cloud_bigdataoss_version = "2.1.6"
+    def google_cloud_firestore_version = "2.2.4"
     def google_cloud_pubsublite_version = "0.7.0"
     def google_code_gson_version = "2.8.6"
     def google_oauth_clients_version = "1.31.0"
@@ -523,6 +519,7 @@ class BeamModulePlugin implements Plugin<Project> {
         google_cloud_datacatalog_v1beta1            : "com.google.cloud:google-cloud-datacatalog", // google_cloud_platform_libraries_bom sets version
         google_cloud_dataflow_java_proto_library_all: "com.google.cloud.dataflow:google-cloud-dataflow-java-proto-library-all:0.5.160304",
         google_cloud_datastore_v1_proto_client      : "com.google.cloud.datastore:datastore-v1-proto-client:1.6.3",
+        google_cloud_firestore                      : "com.google.cloud:google-cloud-firestore:$google_cloud_firestore_version",
         google_cloud_pubsub                         : "com.google.cloud:google-cloud-pubsub", // google_cloud_platform_libraries_bom sets version
         google_cloud_pubsublite                     : "com.google.cloud:google-cloud-pubsublite:$google_cloud_pubsublite_version",
         // The GCP Libraries BOM dashboard shows the versions set by the BOM:
@@ -546,6 +543,7 @@ class BeamModulePlugin implements Plugin<Project> {
         grpc_auth                                   : "io.grpc:grpc-auth", // google_cloud_platform_libraries_bom sets version
         grpc_context                                : "io.grpc:grpc-context", // google_cloud_platform_libraries_bom sets version
         grpc_core                                   : "io.grpc:grpc-core", // google_cloud_platform_libraries_bom sets version
+        grpc_google_cloud_firestore_v1              : "com.google.api.grpc:grpc-google-cloud-firestore-v1:$google_cloud_firestore_version",
         grpc_google_cloud_pubsub_v1                 : "com.google.api.grpc:grpc-google-cloud-pubsub-v1", // google_cloud_platform_libraries_bom sets version
         grpc_google_cloud_pubsublite_v1             : "com.google.api.grpc:grpc-google-cloud-pubsublite-v1:$google_cloud_pubsublite_version",
         grpc_google_common_protos                   : "com.google.api.grpc:grpc-google-common-protos", // google_cloud_platform_libraries_bom sets version
@@ -605,6 +603,7 @@ class BeamModulePlugin implements Plugin<Project> {
         proto_google_cloud_bigtable_v2              : "com.google.api.grpc:proto-google-cloud-bigtable-v2", // google_cloud_platform_libraries_bom sets version
         proto_google_cloud_datacatalog_v1beta1      : "com.google.api.grpc:proto-google-cloud-datacatalog-v1beta1", // google_cloud_platform_libraries_bom sets version
         proto_google_cloud_datastore_v1             : "com.google.api.grpc:proto-google-cloud-datastore-v1", // google_cloud_platform_libraries_bom sets version
+        proto_google_cloud_firestore_v1             : "com.google.api.grpc:proto-google-cloud-firestore-v1:$google_cloud_firestore_version",
         proto_google_cloud_pubsub_v1                : "com.google.api.grpc:proto-google-cloud-pubsub-v1", // google_cloud_platform_libraries_bom sets version
         proto_google_cloud_pubsublite_v1            : "com.google.api.grpc:proto-google-cloud-pubsublite-v1:$google_cloud_pubsublite_version",
         proto_google_cloud_spanner_v1: "com.google.api.grpc:proto-google-cloud-spanner-v1", // google_cloud_platform_libraries_bom sets version
